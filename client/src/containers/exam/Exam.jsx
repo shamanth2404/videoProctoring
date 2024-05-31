@@ -68,7 +68,7 @@ const Exam = () => {
             }
         }
 
-        function check() {
+        function check() {            
             // Check if the window is in fullscreen mode
             if (!window.screenTop && !window.screenY && isFullScreen) {
                 setIsFullScreen(false); // Set fullscreen state to false
@@ -153,16 +153,48 @@ const Exam = () => {
     // Function to check for malpractice
     async function checkMalpractice() {
         try {
-            const response = await axios.post('http://localhost:8080/predict_pose', {
-                img: "captured_image_base64",
+            const response = await axios.post('http://localhost:8080/predict_pose', {                
                 profile_picture: profilePicture // Send the profile picture
             });
             console.log('Malpractice response:', response.data);
         } catch (error) {
             console.error('Error checking malpractice:', error);
         }
+    }    
+
+    const handleFinish = () => {
+        localStorage.setItem("minutes",0);
+        localStorage.setItem("seconds",0);
+        console.log(localStorage.getItem("minutes"));
+        // window.location.href = '/';        
     }
 
+    useEffect(() => {
+        const handleBackButton = (e) => {
+            e.preventDefault();
+            window.history.pushState(null,null,window.location.pathname);
+        }
+
+        window.addEventListener('popstate',handleBackButton);
+
+        const handleBeforeUnload = (e) => {
+            e.preventDefault();
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        window.addEventListener('reload', (e) => {
+            e.preventDefault();
+        })
+
+        window.history.pushState(null, null, window.location.pathname);
+
+        return () => {
+            window.removeEventListener('popstate', handleBackButton);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+          };
+
+    },[]);
     return (
         <div className="exam-container">
             <div className="left-column">
@@ -213,6 +245,7 @@ const Exam = () => {
 
             <div className="timer">
                 <Timer initialMinute={duration} /> {/* Display timer with duration from backend */}
+                {/* <button onClick={handleFinish}>Finish</button> */}
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import base64
 import matplotlib.pyplot as plt
 from flask import Flask
-
+from flask_cors import CORS
 import os
 from flask import request, jsonify
 import tensorflow as tf 
@@ -12,6 +12,7 @@ from mark_detector import MarkDetector
 from pose_estimator import PoseEstimator
 
 app = Flask(__name__)
+CORS(app)
 
 multiple_people_detector = hub.load("https://tfhub.dev/tensorflow/efficientdet/d0/1")
 
@@ -44,6 +45,7 @@ def readb64(uri):
    nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+   img = img.astype(np.float32) / 255.0
    return img
 
 
@@ -51,17 +53,19 @@ def readb64(uri):
 def predict_pose() : 
     data = request.get_json(force = True) 
     image = r'{}'.format(data['img'])
-    print(type(image), image)
+    # print(type(image), image)
     image= readb64(image)
     plt.imshow(image)
     # plt.show()
     # plt.imsave(image, 'sample.jpg');
     height, width = image.shape[0], image.shape[1]
+    
     pose_estimator = PoseEstimator(img_size=(height, width))
+    
     mark_detector = MarkDetector()
 
     facebox = mark_detector.extract_cnn_facebox(image)
-        # Any face found?
+        # Any face found?    
     frame = image
     if facebox is not None:
 

@@ -150,15 +150,15 @@ class PoseEstimator:
                     # calculating euler angles
         rmat, jac = cv2.Rodrigues(rotation_vector)
         angles, mtxR, mtxQ, Qx, Qy, Qz = cv2.RQDecomp3x3(rmat)
-        print('*' * 80)
+        # print('*' * 80)
         # print(f"Qx:{Qx}\tQy:{Qy}\tQz:{Qz}\t")
         x = np.arctan2(Qx[2][1], Qx[2][2])
         y = np.arctan2(-Qy[2][0], np.sqrt((Qy[2][1] * Qy[2][1] ) + (Qy[2][2] * Qy[2][2])))
         z = np.arctan2(Qz[0][0], Qz[1][0])
         # print("ThetaX: ", x)
-        print("ThetaY: ", y)
+        # print("ThetaY: ", y)
         # print("ThetaZ: ", z)
-        print('*' * 80)
+        # print('*' * 80)
         if angles[1] < -15:
             GAZE = "Looking: Left"
         elif angles[1] > 15:
