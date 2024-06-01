@@ -38,8 +38,7 @@ import { useState, useEffect } from 'react';
 const Timer = ({ initialMinute = 1, initialSeconds = 0 }) => {
 	const [minutes, setMinutes] = useState(
 	  localStorage.getItem("minutes") || initialMinute
-	);
-	console.log(localStorage.getItem("minutes"))
+	);	
 	const [seconds, setSeconds] = useState(
 	  localStorage.getItem("seconds") || initialSeconds
 	);

@@ -21,4 +21,5 @@ router.post('/signin', signIn);
 router.post('/signout', requireSignIn, signOut);
 router.get('/user-details/:email', getUserDetails); // Add this line
 
+
 module.exports = router;

@@ -58,14 +58,15 @@ const WebLiveCapture = () => {
 	const [res,setRes] = useState('');
 
 	const capture = React.useCallback(() => {
-		const imageSrc = webcamRef.current.getScreenshot();
+		const imageSrc = webcamRef.current.getScreenshot();		
+		
 		setImage(imageSrc);
 		sendImage(imageSrc); // Send captured image to backend
 	}, [webcamRef]);
 
 	const sendImage = async (imageSrc) => {
 		try {
-			const response = await axios.post('http://localhost:8080/predict_people', {
+			const response = await axios.post('http://localhost:8080/predict_pose', {
                 img: imageSrc,                
             });			
 			console.log(response.data);

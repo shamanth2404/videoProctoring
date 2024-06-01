@@ -15,10 +15,12 @@ app.use(express.json());
 // routes
 const userRoutes = require('./routes/user.routes');
 const testRoutes = require('./routes/test.routes');
+const attemptRoutes = require('./routes/attempts.routes');
 
 app.use('/public', express.static(path.join(__dirname, "uploads")));
 app.use('/api', userRoutes)
 app.use('/api', testRoutes)
+app.use('/api',attemptRoutes)
 
 // mongodb connection
 const connectDB = (dburl) => {

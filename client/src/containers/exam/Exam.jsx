@@ -162,11 +162,9 @@ const Exam = () => {
         }
     }    
 
-    const handleFinish = () => {
-        localStorage.setItem("minutes",0);
-        localStorage.setItem("seconds",0);
-        console.log(localStorage.getItem("minutes"));
-        // window.location.href = '/';        
+    const handleFinish = (e) => {      
+    
+        window.location.href = '/';        
     }
 
     useEffect(() => {
@@ -178,14 +176,12 @@ const Exam = () => {
         window.addEventListener('popstate',handleBackButton);
 
         const handleBeforeUnload = (e) => {
-            e.preventDefault();
+            e.preventDefault();            
         }
 
         window.addEventListener('beforeunload', handleBeforeUnload);
 
-        window.addEventListener('reload', (e) => {
-            e.preventDefault();
-        })
+        
 
         window.history.pushState(null, null, window.location.pathname);
 
@@ -245,7 +241,7 @@ const Exam = () => {
 
             <div className="timer">
                 <Timer initialMinute={duration} /> {/* Display timer with duration from backend */}
-                {/* <button onClick={handleFinish}>Finish</button> */}
+                <button onClick={handleFinish}>Finish</button>
             </div>
         </div>
     );
