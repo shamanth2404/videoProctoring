@@ -9,14 +9,15 @@ const register = (req, res) => {
     User.findOne({ email: req.body.email }).exec((error, user) => {
         if (user) return res.status(409).json({ msg: 'User already registered' });
 
-        const { fullName, email, password } = req.body;
+        const { fullName, email, password,role } = req.body;
         const profilePicture = req.file ? req.file.filename : '';
 
         const _user = new User({
             fullName,
             email,
             password,
-            profilePicture
+            profilePicture,
+            role
         });
 
         _user.save((error, data) => {
@@ -41,11 +42,11 @@ const signIn = (req, res) => {
                         process.env.jwt_secret_key,
                         { expiresIn: '2d' }
                     )
-                    const { _id, fullName, email, profilePicture } = user;
+                    const { _id, fullName, email, profilePicture ,role} = user;
                     res.cookie('token', token, { expiresIn: '2d' });
                     res.status(200).json({
                         token, user: {
-                            _id, fullName, email, profilePicture
+                            _id, fullName, email, profilePicture,role
                         }
                     })
                 } else {

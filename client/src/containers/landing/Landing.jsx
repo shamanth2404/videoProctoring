@@ -19,7 +19,7 @@ const Landing = () => {
   const isAuthenticated = !!localStorage.getItem("token");
   const testCodeRef = useRef(null);
   const [message, setMessage] = useState("");
-  const [attemptMessage,setAttemptMessage] = useState('');
+  const [attemptMessage, setAttemptMessage] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -33,20 +33,26 @@ const Landing = () => {
       const testCode = testCodeRef.current.value;
       if (testCode) {
         const email = localStorage.getItem("email");
-        const response = await axios.get(`http://localhost:5000/api/attempted-test?email=${email}&testCode=${testCode}`);
-        if(response.length === 0){
-          const addAttempt = await axios.post(`http://localhost:5000/api/add-attempt?email=${email}&testCode=${testCode}`);
-          if(!addAttempt.attempt){
+        const response = await axios.get(
+          `http://localhost:5000/api/attempted-test?email=${email}&testCode=${testCode}`
+        );
+        console.log(response.data);
+        if (response.data.length === 0) {
+          const addAttempt = await axios.post(
+            `http://localhost:5000/api/add-attempt?email=${email}&testCode=${testCode}`
+          );
+          console.log(addAttempt);
+          if (addAttempt.status !== 201) {
             console.log("Error adding attempt");
-            return
-          }else{
+            return;
+          } else {
             localStorage.setItem("minutes", "");
-        localStorage.setItem("seconds", "");
-        navigate(`/exam/${testCode}`);
+            localStorage.setItem("seconds", "");
+            navigate(`/exam/${testCode}`);
           }
-        }else{
+        } else {
           setAttemptMessage("Test Already Attempted");
-        }       
+        }
       } else {
         alert("Please enter a test code.");
       }
@@ -56,8 +62,8 @@ const Landing = () => {
   };
 
   const handleCreate = () => {
-    console.log("called");
-    if (localStorage.getItem("role") === "student") {
+    console.log(localStorage.getItem("role"));
+    if (localStorage.getItem("role") === "Student") {
       setMessage("Students aren't allowed to create Test");
     } else {
       navigate("/create");
@@ -90,19 +96,18 @@ const Landing = () => {
           <p className="desc">OR</p>
           <div className="input-item unique-link">
             <div>
-            <CommonInput
-              placeholderText="Unique test code"
-              id="testCode"
-              ref={testCodeRef}
-            />
-            {attemptMessage && <p>{attemptMessage}</p>}
+              <CommonInput
+                placeholderText="Unique test code"
+                id="testCode"
+                ref={testCodeRef}
+              />
+              {attemptMessage && <p>{attemptMessage}</p>}
             </div>
             <span className="join-link">
               <a href="/" onClick={handleJoin}>
                 Join
               </a>
             </span>
-            
           </div>
         </div>
 

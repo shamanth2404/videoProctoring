@@ -32,6 +32,7 @@ const Login = () => {
                 localStorage.setItem('token', token);
                 localStorage.setItem('email', user.email);
                 localStorage.setItem('fullName', user.fullName);
+                localStorage.setItem('role',user.role);
                 navigate('/');
             } else {
                 console.error('Login failed:', response.data.msg);

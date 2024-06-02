@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
 
-const attemptSchema = new mongoose.Schema({    
-    email: {
+const attemptSchema = new mongoose.Schema({     
+    email:{
         type: String,
+        unique: true,
         required: true,
-        unique: true,
-        trim: true,
-        unique: true,
-        lowercase: true
-    },    
-    test_code: { type: String, default: "none" },    
+    },
+    tests:[{
+        testCode:{
+            type: String,
+            required: true,
+        },
+        testScore:{
+            type: Number,
+            default: 0,
+        },
+    }]
 }, { timestamps: true });
+
 
 
 module.exports = mongoose.model('Attempts', attemptSchema);
