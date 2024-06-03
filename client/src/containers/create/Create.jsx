@@ -30,7 +30,7 @@ const Create = () => {
 
     useEffect(() => {
         if (!isAuthenticated) {
-            navigate('/login');
+            console.log("navigate('/login');")
         }
     }, [isAuthenticated, navigate]);
 

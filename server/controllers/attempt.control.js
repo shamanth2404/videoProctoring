@@ -1,9 +1,15 @@
 const Attempts = require('../models/attempts');
+const Tests = require('../models/test');
 
 const attemptedTest = async (req, res) => {
     const { email, testCode } = req.query;
 
     try {
+        const test = await Tests.find({test_code : testCode});
+        console.log(test);
+        if(test.length === 0){
+            return res.json({msg:"Test not found"});
+        }
         const result = await Attempts.find({ email, 'tests.testCode': testCode }).exec();
         return res.status(200).json(result);
     } catch (err) {

@@ -31,12 +31,16 @@ const Landing = () => {
     e.preventDefault();
     if (testCodeRef.current) {
       const testCode = testCodeRef.current.value;
-      if (testCode) {
+      if (testCode) {        
         const email = localStorage.getItem("email");
         const response = await axios.get(
           `http://localhost:5000/api/attempted-test?email=${email}&testCode=${testCode}`
         );
         console.log(response.data);
+        if(response.data.msg === "Test not found"){
+          setAttemptMessage("Invalid Test code");
+          return;
+        }
         if (response.data.length === 0) {
           const addAttempt = await axios.post(
             `http://localhost:5000/api/add-attempt?email=${email}&testCode=${testCode}`
@@ -54,7 +58,7 @@ const Landing = () => {
           setAttemptMessage("Test Already Attempted");
         }
       } else {
-        alert("Please enter a test code.");
+        setAttemptMessage("Please enter a test code.");
       }
     } else {
       console.error("Test code input field not found.");
@@ -104,9 +108,9 @@ const Landing = () => {
               {attemptMessage && <p>{attemptMessage}</p>}
             </div>
             <span className="join-link">
-              <a href="/" onClick={handleJoin}>
+              <p onClick={handleJoin}>
                 Join
-              </a>
+              </p>
             </span>
           </div>
         </div>

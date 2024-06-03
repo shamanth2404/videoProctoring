@@ -147,13 +147,14 @@ const getTestDetails = async (req, res) => {
     try {
         const test = await Test.findOne({ test_code });
         if (!test) {
-            return res.status(404).json({ msg: "Test not found" });
+            return res.json({ msg: "Test not found" });
         }
         res.status(200).json(test);
     } catch (error) {
         res.status(500).json({ msg: "Error fetching test details", error });
     }
 };
+
 
 module.exports = {
     createTest,
