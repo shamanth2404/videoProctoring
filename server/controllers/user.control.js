@@ -53,8 +53,8 @@ const signIn = (req, res) => {
                     return res.status(401).json({ msg: "Invalid password" })
                 }
             }
-            if (!user) {
-                return res.status(404).json({ msg: "User dose not exit" });
+            if (!user) {                
+                return res.json({ msg: "User does not exist" });
             }
         })
 }
