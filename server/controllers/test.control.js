@@ -24,12 +24,12 @@ const createTest = (req, res) => {
         if (error) {
             if (error.code === 11000) {
                 // Duplicate key error
-                return res.status(400).json({ msg: "A test with this link already exists", error });
+                return res.json({ msg: "A test with this link already exists", error });
             }
             return res.status(400).json({ msg: "Something happened while creating new test", error });
         }
         if (data) {
-            return res.status(201).json({ msg: "Successfully created new Test on platform" });
+            return res.status(201).json({ msg: "Successfully created new Test on platform" , data});
         }
     });
 };
@@ -155,6 +155,18 @@ const getTestDetails = async (req, res) => {
     }
 };
 
+const allTests = async (req,res) =>{
+    try {
+        const test = await Test.find({ });
+        if (!test) {
+            return res.json({ msg: "Test not found" });
+        }
+        res.status(200).json(test);
+    } catch (error) {
+        res.status(500).json({ msg: "Error fetching test details", error });
+    }
+}
+
 
 module.exports = {
     createTest,
@@ -170,5 +182,6 @@ module.exports = {
     totalWarnings,
     terminateExam,
     allowInExam,
-    getTestDetails
+    getTestDetails,
+    allTests
 }

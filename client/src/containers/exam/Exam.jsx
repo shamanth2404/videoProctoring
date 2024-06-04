@@ -60,30 +60,30 @@ const Exam = () => {
 
     // Monitor fullscreen mode and devtools state
     useEffect(() => {
-        function captureCheck() {
-            // Capture a screenshot at intervals
-            const btn = document.querySelector('#root > div > div > div.left-column > div.image-capture > button');
-            if (btn) {
-                btn.click();
-            }
-        }
+        // function captureCheck() {
+        //     // Capture a screenshot at intervals
+        //     const btn = document.querySelector('#root > div > div > div.left-column > div.image-capture > button');
+        //     if (btn) {
+        //         btn.click();
+        //     }
+        // }
 
-        function check() {            
-            // Check if the window is in fullscreen mode
-            if (!window.screenTop && !window.screenY && isFullScreen) {
-                setIsFullScreen(false); // Set fullscreen state to false
-            }
+        // function check() {            
+        //     // Check if the window is in fullscreen mode
+        //     if (!window.screenTop && !window.screenY && isFullScreen) {
+        //         setIsFullScreen(false); // Set fullscreen state to false
+        //     }
 
-            if (!isFullScreen) {
-                setWarningCnt(warningCnt + 1); // Increment warning count
-                setShowMessage('Your exam will terminate. Please go to full screen mode.'); // Show message
-                disableForm(); // Disable the form
-            } else {
-                enableForm(); // Enable the form
-            }
+        //     if (!isFullScreen) {
+        //         setWarningCnt(warningCnt + 1); // Increment warning count
+        //         setShowMessage('Your exam will terminate. Please go to full screen mode.'); // Show message
+        //         disableForm(); // Disable the form
+        //     } else {
+        //         enableForm(); // Enable the form
+        //     }
 
-            terminateExam(); // Check if the exam should be terminated
-        }
+        //     terminateExam(); // Check if the exam should be terminated
+        // }
 
         let overlay = document.getElementById('overlay'); // Get the overlay element
         let formBlur = document.getElementById('form-blur'); // Get the form blur element
@@ -139,10 +139,10 @@ const Exam = () => {
 
         window.addEventListener('devtoolschange', devtoolsListener); // Add event listener for devtools
 
-        const captureCheckInterval = setInterval(captureCheck, 20000); // Set interval for capturing screenshots
-        const fullScreenCheckInterval = setInterval(check, 10000); // Set interval for checking fullscreen mode
+        // const captureCheckInterval = setInterval(captureCheck, 20000); // Set interval for capturing screenshots
+        // const fullScreenCheckInterval = setInterval(check, 10000); // Set interval for checking fullscreen mode
 
-        intervalRefs.current.push(captureCheckInterval, fullScreenCheckInterval); // Store intervals in ref
+        // intervalRefs.current.push(captureCheckInterval, fullScreenCheckInterval); // Store intervals in ref
 
         return () => {
             window.removeEventListener('devtoolschange', devtoolsListener); // Remove event listener
@@ -162,8 +162,7 @@ const Exam = () => {
         }
     }    
 
-    const handleFinish = (e) => {      
-    
+    const handleFinish = (e) => {          
         window.location.href = '/';        
     }
 
@@ -172,16 +171,12 @@ const Exam = () => {
             e.preventDefault();
             window.history.pushState(null,null,window.location.pathname);
         }
-
         window.addEventListener('popstate',handleBackButton);
 
         const handleBeforeUnload = (e) => {
             e.preventDefault();            
         }
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        
+        window.addEventListener('beforeunload', handleBeforeUnload);      
 
         window.history.pushState(null, null, window.location.pathname);
 

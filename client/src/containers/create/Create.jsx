@@ -16,6 +16,7 @@ const inputField = [
 ];
 
 const Create = () => {
+    const [message, setMessage] = useState("");
     const [formData, setFormData] = useState({
         email: '',
         organizationName: '',
@@ -42,9 +43,17 @@ const Create = () => {
         });
     };
 
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const emptyFields = Object.keys(formData).filter(key => !formData[key]);
+            console.log(emptyFields);
+            if(emptyFields.length !== 0){
+                setMessage("Enter all the fields");
+                return;
+            }
             const token = localStorage.getItem('token');
             const response = await axios.post('http://localhost:5000/api/create-test', formData, {
                 headers: {
@@ -52,7 +61,9 @@ const Create = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            setMessage(response.data.msg);
             console.log('Response from server:', response.data);
+            if(response.status === 201) navigate('/');
         } catch (error) {
             console.error('There was an error creating the test!', error);
         }
@@ -77,6 +88,7 @@ const Create = () => {
                             />
                         ))}
                     </div>
+                    {message && <p>{message}</p>}
                     <CtaButton text="Create" />
                 </form>
             </div>

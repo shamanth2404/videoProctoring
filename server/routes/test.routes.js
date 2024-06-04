@@ -11,6 +11,7 @@ const {
     terminateExam,
     allowInExam,
     getTestDetails,
+    allTests,
 } = require("../controllers/test.control");
 const { requireSignIn } = require("../middlewares");
 const router = express.Router();
@@ -46,5 +47,7 @@ router.patch("/terminate", requireSignIn, terminateExam);
 router.patch("/allow-in-exam", requireSignIn, allowInExam);
 
 router.get('/test-details/:test_code', getTestDetails); // Add this line
+
+router.get('/allTests',allTests);
 
 module.exports = router;
