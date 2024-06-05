@@ -59,96 +59,158 @@ const Exam = () => {
     }, [formLinkCode, navigate, studentEmail]);
 
     // Monitor fullscreen mode and devtools state
+    // useEffect(() => {
+    //     // function captureCheck() {
+    //     //     // Capture a screenshot at intervals
+    //     //     const btn = document.querySelector('#root > div > div > div.left-column > div.image-capture > button');
+    //     //     if (btn) {
+    //     //         btn.click();
+    //     //     }
+    //     // }
+
+    //     // function check() {            
+    //     //     // Check if the window is in fullscreen mode
+    //     //     if (!window.screenTop && !window.screenY && isFullScreen) {
+    //     //         setIsFullScreen(false); // Set fullscreen state to false
+    //     //     }
+
+    //     //     if (!isFullScreen) {
+    //     //         setWarningCnt(warningCnt + 1); // Increment warning count
+    //     //         setShowMessage('Your exam will terminate. Please go to full screen mode.'); // Show message
+    //     //         disableForm(); // Disable the form
+    //     //     } else {
+    //     //         enableForm(); // Enable the form
+    //     //     }
+
+    //     //     terminateExam(); // Check if the exam should be terminated
+    //     // }
+
+    //     let overlay = document.getElementById('overlay'); // Get the overlay element
+    //     let formBlur = document.getElementById('form-blur'); // Get the form blur element
+
+    //     function disableForm() {
+    //         // Disable the form by adding classes
+    //         if (overlay) {
+    //             overlay.classList.remove('hide');
+    //             overlay.classList.add('disable');
+    //         }
+    //         if (formBlur) {
+    //             formBlur.classList.add('blur');
+    //         }
+    //     }
+
+    //     function enableForm() {
+    //         // Enable the form by removing classes
+    //         if (overlay) {
+    //             overlay.classList.add('hide');
+    //             overlay.classList.remove('disable');
+    //         }
+    //         if (formBlur) {
+    //             formBlur.classList.remove('blur');
+    //         }
+    //     }
+
+    //     function terminateExam() {
+    //         // Terminate the exam if the warning count exceeds the limit
+    //         if (warningCnt > 5) {
+    //             disableForm();
+    //             if (overlay) {
+    //                 overlay.classList.add('terminate');
+    //             }
+    //         }
+    //     }
+
+    //     const devtoolsListener = (event) => {
+    //         // Listen for devtools changes
+    //         if (event.detail.isOpen) {
+    //             setWarningCnt(warningCnt + 1); // Increment warning count if devtools is open
+    //             setIsDevToolsOpen(true); // Set devtools state to open
+    //         }
+
+    //         if (!isDevToolsOpen) {
+    //             setShowMessage('Your exam will terminate. Please close devtools.'); // Show message
+    //             disableForm(); // Disable the form
+    //         } else {
+    //             enableForm(); // Enable the form
+    //         }
+
+    //         terminateExam(); // Check if the exam should be terminated
+    //     };
+
+    //     window.addEventListener('devtoolschange', devtoolsListener); // Add event listener for devtools
+
+    //     // const captureCheckInterval = setInterval(captureCheck, 20000); // Set interval for capturing screenshots
+    //     // const fullScreenCheckInterval = setInterval(check, 10000); // Set interval for checking fullscreen mode
+
+    //     // intervalRefs.current.push(captureCheckInterval, fullScreenCheckInterval); // Store intervals in ref
+
+    //     return () => {
+    //         window.removeEventListener('devtoolschange', devtoolsListener); // Remove event listener
+    //         intervalRefs.current.forEach(clearInterval); // Clear intervals on cleanup
+    //     };
+    // }, []);
+    //isFullScreen, isDevToolsOpen, warningCnt, formLinkCode
+
     useEffect(() => {
-        // function captureCheck() {
-        //     // Capture a screenshot at intervals
-        //     const btn = document.querySelector('#root > div > div > div.left-column > div.image-capture > button');
-        //     if (btn) {
-        //         btn.click();
-        //     }
-        // }
-
-        // function check() {            
-        //     // Check if the window is in fullscreen mode
-        //     if (!window.screenTop && !window.screenY && isFullScreen) {
-        //         setIsFullScreen(false); // Set fullscreen state to false
-        //     }
-
-        //     if (!isFullScreen) {
-        //         setWarningCnt(warningCnt + 1); // Increment warning count
-        //         setShowMessage('Your exam will terminate. Please go to full screen mode.'); // Show message
-        //         disableForm(); // Disable the form
-        //     } else {
-        //         enableForm(); // Enable the form
-        //     }
-
-        //     terminateExam(); // Check if the exam should be terminated
-        // }
-
-        let overlay = document.getElementById('overlay'); // Get the overlay element
-        let formBlur = document.getElementById('form-blur'); // Get the form blur element
-
-        function disableForm() {
-            // Disable the form by adding classes
-            if (overlay) {
-                overlay.classList.remove('hide');
-                overlay.classList.add('disable');
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                setWarningCnt(prev => prev + 1);
+                setShowMessage('Do not switch tabs or windows.');
             }
-            if (formBlur) {
-                formBlur.classList.add('blur');
-            }
-        }
-
-        function enableForm() {
-            // Enable the form by removing classes
-            if (overlay) {
-                overlay.classList.add('hide');
-                overlay.classList.remove('disable');
-            }
-            if (formBlur) {
-                formBlur.classList.remove('blur');
-            }
-        }
-
-        function terminateExam() {
-            // Terminate the exam if the warning count exceeds the limit
-            if (warningCnt > 5) {
-                disableForm();
-                if (overlay) {
-                    overlay.classList.add('terminate');
-                }
-            }
-        }
-
-        const devtoolsListener = (event) => {
-            // Listen for devtools changes
-            if (event.detail.isOpen) {
-                setWarningCnt(warningCnt + 1); // Increment warning count if devtools is open
-                setIsDevToolsOpen(true); // Set devtools state to open
-            }
-
-            if (!isDevToolsOpen) {
-                setShowMessage('Your exam will terminate. Please close devtools.'); // Show message
-                disableForm(); // Disable the form
-            } else {
-                enableForm(); // Enable the form
-            }
-
-            terminateExam(); // Check if the exam should be terminated
         };
 
-        window.addEventListener('devtoolschange', devtoolsListener); // Add event listener for devtools
+        const handleBlur = () => {
+            setWarningCnt(prev => prev + 1);
+            setShowMessage('Do not blur tabs or windows.');
+        };
 
-        // const captureCheckInterval = setInterval(captureCheck, 20000); // Set interval for capturing screenshots
-        // const fullScreenCheckInterval = setInterval(check, 10000); // Set interval for checking fullscreen mode
+        const handleFocus = () => {
+            setShowMessage('');
+        };
 
-        // intervalRefs.current.push(captureCheckInterval, fullScreenCheckInterval); // Store intervals in ref
+        const handleDevToolsChange = (event) => {
+            if (event.detail.isOpen) {
+                setWarningCnt(prev => prev + 1);
+                setIsDevToolsOpen(true);
+                setShowMessage('Do not open developer tools.');
+            } else {
+                setIsDevToolsOpen(false);
+                setShowMessage('');
+            }
+        };
+
+        const handleResize = () => {
+            setWarningCnt(prev => prev + 1);
+            setShowMessage('Do not resize the window.');
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('blur', handleBlur);
+        window.addEventListener('focus', handleFocus);
+        window.addEventListener('devtoolschange', handleDevToolsChange);
+        window.addEventListener('resize', handleResize);
+
+        // Add a listener for devtools detection
+        const detectDevTools = () => {
+            if (devtools.isOpen) {
+                setWarningCnt(prev => prev + 1);
+                setIsDevToolsOpen(true);
+                setShowMessage('Do not open developer tools.');
+            } else {
+                setIsDevToolsOpen(false);
+                setShowMessage('');
+            }
+        };
+        detectDevTools();
 
         return () => {
-            window.removeEventListener('devtoolschange', devtoolsListener); // Remove event listener
-            intervalRefs.current.forEach(clearInterval); // Clear intervals on cleanup
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('blur', handleBlur);
+            window.removeEventListener('focus', handleFocus);
+            window.removeEventListener('devtoolschange', handleDevToolsChange);
+            window.removeEventListener('resize', handleResize);
         };
-    }, [isFullScreen, isDevToolsOpen, warningCnt, formLinkCode]);
+    }, []);
 
     // Function to check for malpractice
     async function checkMalpractice() {
@@ -191,6 +253,7 @@ const Exam = () => {
             <div className="left-column">
                 <div className="image-capture">
                     <WebLiveCapture /> {/* Component to capture live webcam feed */}
+                    {showMessage && <p>{showMessage}</p>}
                 </div>
                 <div className="exam-details">
                     <h3 className="title-heading">Student Details</h3>

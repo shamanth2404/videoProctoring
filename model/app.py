@@ -56,7 +56,7 @@ def predict_pose() :
     # print(type(image), image)
     image= readb64(image)
     plt.imshow(image)
-    # plt.show()
+    plt.show()
     # plt.imsave(image, 'sample.jpg');
     height, width = image.shape[0], image.shape[1]
     
